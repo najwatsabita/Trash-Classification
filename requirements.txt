@@ -4,3 +4,5 @@ torch
 numpy
 pydantic
 python-multipart
+wandb
+lightning
