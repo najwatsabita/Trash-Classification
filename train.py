@@ -7,7 +7,7 @@ from dataset import get_dataloader
 from model import ImageClassifier
 
 wandb.login()
-data_dir = 'dataset-original/'
+data_dir = 'dataset/'
 num_classes = 6
 batch_size = 16
 
