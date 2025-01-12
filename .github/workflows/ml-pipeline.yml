@@ -50,17 +50,17 @@ jobs:
         
     - name: Setup dataset directory
       run: |
-        mkdir -p dataset-original
-        mkdir -p dataset-original/cardboard
-        mkdir -p dataset-original/glass
-        mkdir -p dataset-original/metal
-        mkdir -p dataset-original/paper
-        mkdir -p dataset-original/plastic
-        mkdir -p dataset-original/trash
+        mkdir -p dataset/
+        mkdir -p dataset/cardboard/
+        mkdir -p dataset/glass/
+        mkdir -p dataset/metal/
+        mkdir -p dataset/paper/
+        mkdir -p dataset/plastic/
+        mkdir -p dataset/trash/
         
     - name: Download dataset from Google Drive
       run: |
-        gdown --folder ${{ secrets.DATASET_FOLDER_ID }} -O dataset-original
+        gdown --folder ${{ secrets.DATASET_FOLDER_ID }} -O dataset
         
     - name: Train model
       env:
