@@ -40,7 +40,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install torch torchvision pytorch-lightning fastapi uvicorn pillow wandb google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client
+        pip install torch torchvision pytorch-lightning fastapi uvicorn pillow wandb google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client gdown
         
     - name: Configure Wandb
       env:
