@@ -22,24 +22,34 @@ jobs:
         python -m pip install --upgrade pip
         pip install torch torchvision pytorch-lightning fastapi uvicorn pillow wandb google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client gdown
         
-    - name: Setup dataset directory
+    - name: Debug Google Drive ID
       run: |
-        mkdir -p dataset
+        echo "Using Google Drive Folder ID: ${{ secrets.DATASET_FOLDER_ID }}"
         
     - name: Download and verify dataset
       run: |
-        # Download dataset
-        gdown https://drive.google.com/drive/folders/${{ secrets.DATASET_FOLDER_ID }} --folder -O dataset --remaining-ok
+        # Create dataset directory
+        mkdir -p dataset
+        
+        # Download dataset with verbose output
+        gdown "https://drive.google.com/drive/folders/${{ secrets.DATASET_FOLDER_ID }}" \
+          --folder \
+          -O dataset \
+          --remaining-ok \
+          --continue
         
         # Debug information
-        echo "=== Dataset Structure ==="
-        ls -la dataset/
-        echo "=== Detailed Structure ==="
-        find dataset/ -type d
-        echo "=== File Count per Class ==="
-        for dir in dataset/*/; do
-          echo "$dir: $(ls -1 "$dir" 2>/dev/null | wc -l) files"
-        done
+        echo "=== Current Directory ==="
+        pwd
+        
+        echo "=== Dataset Directory Location ==="
+        ls -la
+        
+        echo "=== Dataset Contents ==="
+        ls -R dataset/
+        
+        echo "=== Directory Tree ==="
+        tree dataset/ || true
         
     - name: Configure Wandb
       env:
@@ -47,8 +57,15 @@ jobs:
       run: |
         wandb login $WANDB_API_KEY
         
+    - name: Create checkpoint directory
+      run: |
+        mkdir -p checkpoint
+        mkdir -p logs
+        
     - name: Train model
       env:
         WANDB_PROJECT: trash-classification
       run: |
+        echo "=== Pre-training Dataset Check ==="
+        ls -R dataset/
         python train.py
