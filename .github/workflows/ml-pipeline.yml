@@ -60,7 +60,7 @@ jobs:
         
     - name: Download dataset from Google Drive
       run: |
-        gdown --folder ${{ secrets.DATASET_FOLDER_ID }} -O dataset
+        gdown https://drive.google.com/drive/folders/1xzKOrdvkvmTFyUbEGkcFroKNWzqGjcDv?usp=drive_link ${{ secrets.DATASET_FOLDER_ID }} --folder -O dataset
         
     - name: Train model
       env:
