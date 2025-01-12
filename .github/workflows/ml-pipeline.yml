@@ -42,25 +42,24 @@ jobs:
         python -m pip install --upgrade pip
         pip install torch torchvision pytorch-lightning fastapi uvicorn pillow wandb google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client gdown
         
+    - name: Setup dataset directory
+      run: |
+        mkdir -p dataset
+        
+    - name: Download dataset from Google Drive
+      run: |
+        gdown https://drive.google.com/drive/folders/${{ secrets.DATASET_FOLDER_ID }} \
+          --folder \
+          -O dataset \
+          --remaining-ok \
+          --continue
+        ls -R dataset  # This will show us the downloaded structure for debugging
+        
     - name: Configure Wandb
       env:
         WANDB_API_KEY: ${{ secrets.WANDB_API_KEY }}
       run: |
         wandb login $WANDB_API_KEY
-        
-    - name: Setup dataset directory
-      run: |
-        mkdir -p dataset/
-        mkdir -p dataset/cardboard/
-        mkdir -p dataset/glass/
-        mkdir -p dataset/metal/
-        mkdir -p dataset/paper/
-        mkdir -p dataset/plastic/
-        mkdir -p dataset/trash/
-        
-    - name: Download dataset from Google Drive
-      run: |
-        gdown https://drive.google.com/drive/folders/1xzKOrdvkvmTFyUbEGkcFroKNWzqGjcDv?usp=drive_link ${{ secrets.DATASET_FOLDER_ID }} --folder -O dataset --remaining-ok --continue
         
     - name: Train model
       env:
