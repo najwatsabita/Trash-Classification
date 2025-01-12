@@ -28,10 +28,14 @@ jobs:
         
     - name: Download and verify dataset
       run: |
-        # Create dataset directory
+        # Create directories
         mkdir -p dataset
+        mkdir -p ~/.cache/gdown
         
-        # Download dataset with verbose output
+        # Create cookies from secret
+        echo "${{ secrets.GDRIVE_COOKIES }}" > ~/.cache/gdown/cookies.txt
+        
+        # Download with cookies
         gdown "https://drive.google.com/drive/folders/${{ secrets.DATASET_FOLDER_ID }}" \
           --folder \
           -O dataset \
